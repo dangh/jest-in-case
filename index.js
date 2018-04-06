@@ -8,7 +8,10 @@ type Tester<Opts> = (opts: Opts, done?: () => void) => ?Promise<mixed>;
 type TestCases<Opts> = Array<Opts> | { [name: string]: Opts };
 */
 
-function cases /*:: <Opts: Config> */(title /*: string */, tester /*: Tester<Opts> */, testCases /*: TestCases<Opts> */) /*: void */ {
+function defaultCaseName(testCase /*: Opts */, index /*: number */) /*: ?string */ {
+}
+
+function cases /*:: <Opts: Config> */(title /*: string */, tester /*: Tester<Opts> */, testCases /*: TestCases<Opts> */, getCaseName /*: Function */ = defaultCaseName) /*: void */ {
   let normalized;
 
   if (Array.isArray(testCases)) {
@@ -22,7 +25,7 @@ function cases /*:: <Opts: Config> */(title /*: string */, tester /*: Tester<Opt
 
   describe(title, () => {
     normalized.forEach((testCase, index) => {
-      let name = testCase.name || `case: ${index + 1}`;
+      let name = getCaseName(testCase, index) || testCase.name || `case: ${index + 1}`;
 
       let testFn;
       if (testCase.only) {

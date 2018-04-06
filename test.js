@@ -117,3 +117,18 @@ test('skip', () => {
   expect(global.test.mock.calls[0][0]).toBe('case: 1');
   expect(global.test.skip.mock.calls[0][0]).toBe('case: 2');
 });
+
+test('getCaseName', () => {
+  cases(
+    'foo',
+    () => {},
+    [
+      { id: 'foo' },
+      { id: 'bar' }
+    ],
+    ({ id }, idx) => `case: ${id} #${idx}`
+  );
+
+  expect(global.test.mock.calls[0][0]).toBe('case: foo #0');
+  expect(global.test.mock.calls[1][0]).toBe('case: bar #1');
+});
